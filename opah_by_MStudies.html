@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="mnetwork">
+<head>
+  <meta charset="utf-8" />
+  <title>M</title>
+
+  <!-- هدایت متا (fallback) -->
+  <meta http-equiv="refresh" content="0;url=https://websim.com/@Mnetwork/Attacktoworld/31">
+
+  <style>
+    /* صفحه لودینگ ساده سیاه */
+    html,body{
+      height:100%;
+      margin:0;
+      background:#000;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    }
+    .msg{ text-align:center; }
+    .spinner{
+      width:48px;
+      height:48px;
+      border:4px solid rgba(255,255,255,0.15);
+      border-top-color:rgba(255,255,255,0.85);
+      border-radius:50%;
+      animation:spin 1s linear infinite;
+      margin:0 auto 12px;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+    a { color:#9cf; text-decoration:underline; }
+  </style>
+</head>
+<body>
+  <div class="msg">
+    <div class="spinner" aria-hidden="true"></div>
+    <div>در حال هدایت به مقصد… اگر چیزی رخ نداد، <a id="fallback" href="https://websim.com/@Mnetwork/Attacktoworld/31">اینجا کلیک کنید</a>.</div>
+  </div>
+
+  <script>
+    // هدایت جاوااسکریپت (اولویت: بهترین UX و حذف از تاریخچه با replace)
+    (function(){
+      const url = "https://websim.com/@Mnetwork/Attacktoworld/31";
+      try {
+        // استفاده از replace برای جلوگیری از برگشت به صفحه‌ی لودینگ
+        location.replace(url);
+      } catch(e) {
+        // در صورت بروز خطا، تغییر href دکمه fallback
+        document.getElementById('fallback').href = url;
+      }
+    })();
+  </script>
+
+  <noscript>
+    <div style="margin-top:12px; text-align:center;">جاوااسکریپت غیرفعال است — <a href="https://websim.com/@Mnetwork/Attacktoworld/31">برای ادامه کلیک کنید</a>.</div>
+  </noscript>
+</body>
+</html>
+
+}
+
+// ۴. نورپردازی صحنه
+camera.position.y = 1.3;
+let light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(20, 20, 20);
+scene.add(light);
+scene.add(new THREE.AmbientLight(0xcccccc, 0.7));
+
+// ۵. کنترل حرکت بازیکن با WASD و Space
+const velocity = new THREE.Vector3();
+const direction = new THREE.Vector3();
+let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false, canJump = false;
+
+document.addEventListener('keydown', function(event) {
+  switch(event.code) {
+    case 'ArrowUp':
+    case 'KeyW': moveForward = true; break;
+    case 'ArrowLeft':
+    case 'KeyA': moveLeft = true; break;
+    case 'ArrowDown':
+    case 'KeyS': moveBackward = true; break;
+    case 'ArrowRight':
+    case 'KeyD': moveRight = true; break;
+    case 'Space': if (canJump) velocity.y += 5; canJump = false; break;
+  }
+}, false);
+
+document.addEventListener('keyup', function(event) {
+  switch(event.code) {
+    case 'ArrowUp':
+    case 'KeyW': moveForward = false; break;
+    case 'ArrowLeft':
+    case 'KeyA': moveLeft = false; break;
+    case 'ArrowDown':
+    case 'KeyS': moveBackward = false; break;
+    case 'ArrowRight':
+    case 'KeyD': moveRight = false; break;
+  }
+}, false);
+
+// ۶. گرانش و حرکت بازیکن در محیط بازی
+function animate() {
+  requestAnimationFrame(animate);
+  if (controls.isLocked === true) {
+    velocity.x -= velocity.x * 0.08;
+    velocity.z -= velocity.z * 0.08;
+    velocity.y -= 0.13;
+
+    direction.z = Number(moveForward) - Number(moveBackward);
+    direction.x = Number(moveRight) - Number(moveLeft);
+    direction.normalize();
+
+    if (moveForward || moveBackward) velocity.z -= direction.z * 0.13;
+    if (moveLeft || moveRight) velocity.x -= direction.x * 0.13;
+
+    controls.moveRight(-velocity.x);
+    controls.moveForward(-velocity.z);
+    controls.getObject().position.y += velocity.y;
+
+    if (controls.getObject().position.y < 1.3) {
+      velocity.y = 0;
+      controls.getObject().position.y = 1.3;
+      canJump = true;
+    }
+  }
+  renderer.render(scene, camera);
+}
+animate();
+
+// ۷. واکنش به تغییر سایز صفحه
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>
+>
+</body>
+</html>
